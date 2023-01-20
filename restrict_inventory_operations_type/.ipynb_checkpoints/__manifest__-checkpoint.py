@@ -19,8 +19,7 @@
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Inventory',
-    'version': '1.0',
-    'installed_version': '15.0.0.1',
+    'version': '0.1',
 
     'license': 'Other proprietary',
 
@@ -29,6 +28,7 @@
 
     # always loaded
     'data': [
+        'security/acceso_transferencias_internas.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
