@@ -25,7 +25,7 @@
     'license': 'Other proprietary',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'account', 'branch'],
+    'depends': ['base', 'branch'], # 'account',
 
     # always loaded
     'data': [
