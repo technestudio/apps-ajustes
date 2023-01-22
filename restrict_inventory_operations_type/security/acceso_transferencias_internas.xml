@@ -38,7 +38,6 @@
             <field name="implied_ids" eval="[(4, ref('restrict_inventory_operations_type.group_permitir_transferencias_internas'))]"/>
         </record>        
         
-  
         <!--stock.picking.type-->
         
         <record id="only_access_outgoing_operations" model="ir.rule">

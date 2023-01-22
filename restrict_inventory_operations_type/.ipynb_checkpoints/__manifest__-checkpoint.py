@@ -29,6 +29,7 @@
     # always loaded
     'data': [
         'security/acceso_transferencias_internas.xml',
+        'views/stock_picking_inherit_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
