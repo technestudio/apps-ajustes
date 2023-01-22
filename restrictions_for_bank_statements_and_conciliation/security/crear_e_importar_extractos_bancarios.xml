@@ -75,5 +75,6 @@
             <field name="model_id" ref="account.model_account_move" />
             <field name="groups" eval="[Command.link(ref('group_crear_e_importar_extractos_bancarios'))]" />
         </record>
+               
     </data>
 </odoo>

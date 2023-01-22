@@ -38,9 +38,6 @@
     ],
     
     'assets': {
-        'web.assets_common': [
-            'restrictions_for_bank_statements_and_conciliation/static/src/js/account_payment_extension.js',
-        ],
         'web.assets_qweb': [
             'restrictions_for_bank_statements_and_conciliation/static/src/xml/*',
         ],
