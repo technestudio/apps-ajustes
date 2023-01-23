@@ -3,7 +3,7 @@
     'name': "Restricciones para: extractos bancarios, conciliaciones y rompimiento de conciliaciones",
 
     'summary': """
-        Restringe el la visualización de información de acuerdo a la rama activa o la rama permitida de un usuario.
+        Restricciones para extractos bancarios, conciliaciones y rompimiento de conciliaciones.
     """,
 
     'description': """

@@ -187,7 +187,7 @@
             <field name="perm_unlink" eval="0" />
             <field name="domain_force">[('picking_id.picking_type_id.code', '=', 'incoming')]</field>
             <field name="model_id" ref="stock.model_stock_move" />
-            <field name="groups" eval="[Command.link(ref('stock.group_stock_user'))]" />
+            <field name="groups" eval="[Command.link(ref('purchase.group_purchase_user'))]" />
         </record>        
         
                 
