@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Botón inteligente para devoluciones",
+    'name': "Botón Inteligente para Devoluciones",
 
     'summary': """
         Limita la visibilidad del botón de envío para solo OS facturadas. Incluye botón inteligente para devoluciones. 
@@ -21,11 +21,12 @@
     'license': 'Other proprietary',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base', 'sale'],
 
     # always loaded
     'data': [
         'security/despacho_devolucion.xml',
+        'views/despacho_devolucion_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
