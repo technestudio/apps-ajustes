@@ -4,7 +4,9 @@ from odoo import api, fields, models
 class SaleOrderExtendida(models.Model):
     _inherit = "sale.order"
     
-    picking_returns = fields.One2many(compute='_get_returns_ids', inverse_name="sale_id", comodel_name='stock.picking', string='Devoluciones', store=True)
+    picking_returns = fields.One2many('stock.picking', 'sale_id', string='Devoluciones')
+    
+    #One2many(related='picking_ids', string='Devoluciones', compute='_get_returns_ids')
     returns_count = fields.Integer(string='Cantidad de Devoluciones', compute='_compute_returns')
     
     
