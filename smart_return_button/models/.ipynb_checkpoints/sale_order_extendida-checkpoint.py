@@ -3,27 +3,28 @@ from odoo import api, fields, models
 
 class SaleOrderExtendida(models.Model):
     _inherit = "sale.order"
-    
-    picking_returns = fields.One2many('stock.picking', 'sale_id', string='Devoluciones')
-    
-    #One2many(related='picking_ids', string='Devoluciones', compute='_get_returns_ids')
-    returns_count = fields.Integer(string='Cantidad de Devoluciones', compute='_compute_returns')
-    
-    
-    @api.depends('picking_ids')
-    def _get_returns_ids(self):
-        for order in self:
-            for pick in order.picking_ids:
-                if (pick.picking_type_code == 'incoming' and pick.location_id.usage == 'customer') or\
-                   (pick.picking_type_code == 'outgoing' and pick.state == 'done'):
-                    order.picking_returns = (4, pick)
-                          
-    
 
-    @api.depends('picking_returns')
+    returns_count = fields.Integer(string='Cantidad de Devoluciones', default=0)
+    
+    def _get_returns_ids(self):
+        return self.env['sale.order'].search(['|', 
+                                              '&', 
+                                              ('picking_ids.picking_type_code','=','incoming'), 
+                                              ('picking_ids.location_id.usage','=','customer'),
+                                              '&', 
+                                              ('picking_ids.picking_type_code','=','outgoing'), 
+                                              ('picking_ids.state','=','done')
+                                             ])        
+
+    
+    @api.onchange('picking_ids')
     def _compute_returns(self):
+        returns_ids = self._get_returns_ids()
         for order in self:
-            order.returns_count = len(order.picking_returns)
+            for r_ids in returns_ids:
+                if r_ids.id == order.id:
+                    order.returns_count = 5
+
             
     def _get_action_view_returns(self, pickings):
 
@@ -47,4 +48,4 @@ class SaleOrderExtendida(models.Model):
             
             
     def action_view_return(self):
-        return self._get_action_view_returns(self.picking_returns)
+        return self._get_action_view_returns(self._get_returns_ids())
