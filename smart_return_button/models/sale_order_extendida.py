@@ -4,26 +4,16 @@ from odoo import api, fields, models
 class SaleOrderExtendida(models.Model):
     _inherit = "sale.order"
 
-    returns_count = fields.Integer(string='Cantidad de Devoluciones', default=0)
-    
-    def _get_returns_ids(self):
-        return self.env['sale.order'].search(['|', 
-                                              '&', 
-                                              ('picking_ids.picking_type_code','=','incoming'), 
-                                              ('picking_ids.location_id.usage','=','customer'),
-                                              '&', 
-                                              ('picking_ids.picking_type_code','=','outgoing'), 
-                                              ('picking_ids.state','=','done')
-                                             ])        
+    returns_count = fields.Integer(string='Cantidad de Devoluciones', compute='_compute_returns')
 
-    
-    @api.onchange('picking_ids')
+    @api.depends('picking_ids')
     def _compute_returns(self):
-        returns_ids = self._get_returns_ids()
         for order in self:
-            for r_ids in returns_ids:
-                if r_ids.id == order.id:
-                    order.returns_count = 5
+            order.returns_count = 0
+            for pick in order.picking_ids:
+                if (pick.picking_type_code == 'incoming' and pick.location_id.usage == 'customer') or\
+                   (pick.picking_type_code == 'outgoing' and pick.state == 'done'):
+                    order.returns_count+=1
 
             
     def _get_action_view_returns(self, pickings):
@@ -40,12 +30,16 @@ class SaleOrderExtendida(models.Model):
                 action['views'] = form_view
             action['res_id'] = pickings.id
 
+        picking_id = pickings[0]
         action['context'] = dict(self._context, default_partner_id=self.partner_id.id,
-                                 default_picking_type_id=pickings.picking_type_id.id, 
-                                 default_origin=self.name, default_group_id=pickings.group_id.id)
+                                 default_picking_type_id=picking_id.picking_type_id.id, 
+                                 default_origin=self.name, default_group_id=picking_id.group_id.id)
         return action            
-            
-            
-            
+
+        
+        
     def action_view_return(self):
-        return self._get_action_view_returns(self._get_returns_ids())
+
+        sale_picks = self.picking_ids.filtered(lambda o: (o.picking_type_code == 'incoming' and o.location_id.usage == 'customer') or (o.picking_type_code == 'outgoing' and o.state == 'done'))
+        
+        return self._get_action_view_returns(sale_picks)
